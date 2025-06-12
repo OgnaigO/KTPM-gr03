@@ -1,0 +1,73 @@
+<style>
+  .login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+  }
+
+  .login-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .login-container button:hover {
+    background-color: #0056b3;
+  }
+
+  .login-container .error-message {
+    color: red;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+</style>
+
+<div class="login-container">
+  <h2>Đăng nhập</h2>
+  <form action="/login" method="POST">
+    {{#if error}}
+      <p class="error-message">{{error}}</p>
+    {{/if}}
+
+    <label for="username">Tên đăng nhập:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Mật khẩu:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Đăng nhập</button>
+  </form>
+</div>
