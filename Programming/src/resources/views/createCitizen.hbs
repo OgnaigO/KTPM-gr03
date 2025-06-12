@@ -1,0 +1,53 @@
+<h2 style="text-align: center; margin-bottom: 20px;">Thêm Nhân Khẩu Mới</h2>
+
+<form action="/citizen/create" method="POST" style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+  <div style="margin-bottom: 15px;">
+    <label for="ho_ten" style="display: block; font-weight: bold;">Họ tên:</label>
+    <input type="text" id="ho_ten" name="ho_ten" required style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="tuoi" style="display: block; font-weight: bold;">Tuổi:</label>
+    <input type="number" id="tuoi" name="tuoi" required style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="gioi_tinh" style="display: block; font-weight: bold;">Giới tính:</label>
+    <select id="gioi_tinh" name="gioi_tinh" required style="width: 100%; padding: 8px;">
+      <option value="">-- Chọn giới tính --</option>
+      <option value="Nam">Nam</option>
+      <option value="Nữ">Nữ</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="so_cccd" style="display: block; font-weight: bold;">Số CCCD:</label>
+    <input type="text" id="so_cccd" name="so_cccd" required style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="so_dien_thoai" style="display: block; font-weight: bold;">Số điện thoại:</label>
+    <input type="text" id="so_dien_thoai" name="so_dien_thoai" style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="trang_thai" style="display: block; font-weight: bold;">Trạng thái:</label>
+    <select id="trang_thai" name="trang_thai" required style="width: 100%; padding: 8px;">
+      <option value="">-- Chọn trạng thái --</option>
+      <option value="đang ở">Đang ở</option>
+      <option value="đã chuyển đi">Đã chuyển đi</option>
+      <option value="đã qua đời">Đã qua đời</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label for="ma_ho_khau" style="display: block; font-weight: bold;">Mã hộ khẩu:</label>
+    <input type="text" id="ma_ho_khau" name="ma_ho_khau" required style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="text-align: center;">
+    <button type="submit" style="padding: 10px 20px; font-weight: bold; background-color: #007BFF; color: white; border: none; border-radius: 5px;">
+      Thêm nhân khẩu
+    </button>
+  </div>
+</form>
