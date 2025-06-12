@@ -1,0 +1,77 @@
+<style>
+  .admin-container {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+  }
+
+  .admin-container h1 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .admin-container p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+  }
+
+  .admin-container a {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .admin-container a:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<div class="admin-container">
+  <h1>Chào mừng đến trang quản trị</h1>
+  <p>Admin: <strong>{{user.username}}</strong></p>
+  <a href="/admin/users/create">+ Tạo tài khoản mới</a>
+</div>
+<table class="table table-bordered table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>Tên đăng nhập</th>
+      <th>Vai trò</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+      <tr>
+        <td>{{this.username}}</td>
+        <td>
+          {{#if (eq this.role "admin")}}Quản trị viên
+          {{else if (eq this.role "totruong")}}Tổ trưởng
+          {{else if (eq this.role "topho")}}Tổ phó
+          {{else if (eq this.role "ketoan")}}Kế toán
+          {{else}}{{this.role}}{{/if}}
+        </td>
+        <td>
+          <form action="/admin/users/{{this._id}}?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if successDelete}}
+  <div class="alert alert-success mt-3">Xóa tài khoản thành công!</div>
+{{/if}}

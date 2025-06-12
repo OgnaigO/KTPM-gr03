@@ -1,0 +1,67 @@
+<h2 style="text-align: center;">Đổi thông tin tài khoản</h2>
+
+{{#if error}}
+  <p style="color: red; font-weight: 600; margin-bottom: 1rem; text-align: center;">{{error}}</p>
+{{/if}}
+
+{{#if success}}
+  <p style="color: green; font-weight: 600; margin-bottom: 1rem; text-align: center;">{{success}}</p>
+{{/if}}
+
+<div style="display: flex; justify-content: center; margin-top: 2rem;">
+  <form method="POST" action="/user/change-info" style="width: 100%; max-width: 400px;">
+    <div style="margin-bottom: 1rem;">
+      <label for="username" style="display: block; font-weight: 600; margin-bottom: 0.3rem;">Username mới:</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        value="{{user.username}}" 
+        required 
+        style="width: 100%; padding: 0.4rem 0.6rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="currentPassword" style="display: block; font-weight: 600; margin-bottom: 0.3rem;">
+        Mật khẩu hiện tại (nếu đổi mật khẩu):
+      </label>
+      <input 
+        type="password" 
+        id="currentPassword" 
+        name="currentPassword" 
+        style="width: 100%; padding: 0.4rem 0.6rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <label for="newPassword" style="display: block; font-weight: 600; margin-bottom: 0.3rem;">
+        Mật khẩu mới (nếu đổi mật khẩu):
+      </label>
+      <input 
+        type="password" 
+        id="newPassword" 
+        name="newPassword" 
+        style="width: 100%; padding: 0.4rem 0.6rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <button 
+      type="submit" 
+      style="
+        background-color: #007bff; 
+        color: white; 
+        padding: 0.5rem 1rem; 
+        font-size: 1rem; 
+        border: none; 
+        border-radius: 4px; 
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      "
+      onmouseover="this.style.backgroundColor='#0056b3'"
+      onmouseout="this.style.backgroundColor='#007bff'"
+    >
+      Cập nhật
+    </button>
+  </form>
+</div>
