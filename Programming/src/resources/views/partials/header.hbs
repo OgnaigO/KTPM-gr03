@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="">BlueMoon</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" 
+    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- Menu chính bên trái -->
+    <ul class="navbar-nav mr-auto">
+     
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/citizen" id="navbarDropdownCitizen" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Nhân khẩu
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownCitizen">
+          <a class="dropdown-item" href="/citizen">Danh sách nhân khẩu</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/citizen/create">Thêm nhân khẩu</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/household" id="navbarDropdownHousehold" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Hộ khẩu
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownHousehold">
+          <a class="dropdown-item" href="/household">Danh sách hộ khẩu</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/household/create">Thêm hộ khẩu</a>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="/fee" id="navbarDropdownFee" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Khoản thu
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownFee">
+          <a class="dropdown-item" href="/fee">Danh sách khoản thu</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/fee/create">Thêm khoản thu</a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Phần bên phải: Hiển thị role và nút Đăng xuất / Đăng nhập -->
+    <div class="navbar-nav ml-auto align-items-center">
+  {{#if user}}
+    <div class="dropdown">
+      <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="roleDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Vai trò: 
+        {{#if (eq user.role "admin")}}Quản trị viên
+        {{else if (eq user.role "totruong")}}Tổ trưởng
+        {{else if (eq user.role "topho")}}Tổ phó
+        {{else if (eq user.role "ketoan")}}Kế toán
+        {{else}}{{user.role}}{{/if}}
+      </button>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="roleDropdown">
+        <a class="dropdown-item" href="/user/change-info">Đổi thông tin</a>
+      </div>
+    </div>
+
+    <form action="/logout" method="POST" class="mb-0 ml-3">
+      <button class="btn btn-outline-light btn-sm" type="submit">Đăng xuất</button>
+    </form>
+  {{else}}
+    <a class="btn btn-outline-light btn-sm" href="/login">Đăng nhập</a>
+  {{/if}}
+</div>
+  </div>
+</nav>
