@@ -1,0 +1,44 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "beautiful": "prettier --single-quote --trailing-comma all --tab-width 4 --write 'src/**/*.{js,json,scss}'",
+    "start": "nodemon --inspect src/index.js",
+    "watch": "sass --watch src/resources/scss/app.scss src/public/css/app.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dungtt4905/nodejs_blog.git"
+  },
+  "keywords": [
+    "f8",
+    "blog",
+    "nodejs"
+  ],
+  "author": "dunz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dungtt4905/nodejs_blog/issues"
+  },
+  "homepage": "https://github.com/dungtt4905/nodejs_blog#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "express-session": "^1.18.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.15.0",
+    "prettier": "^3.5.3"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "sass": "^1.89.0"
+  }
+}
