@@ -1,0 +1,53 @@
+<h2 style="text-align: center; margin-bottom: 20px;">Thay Đổi Thông Tin Khoản Thu</h2>
+
+<form action="/fee/{{fees._id}}?_method=PUT" method="POST" style="max-width: 600px; margin: auto;">
+  <div style="margin-bottom: 1em;">
+    <label for="ten_khoan_thu" style="display: block; font-weight: bold;">Tên khoản thu:</label>
+    <input type="text" id="ten_khoan_thu" name="ten_khoan_thu" required placeholder="Ví dụ: Tiền điện"
+      value="{{fees.ten_khoan_thu}}" style="width: 100%; padding: 8px;" />
+  </div>
+
+  <div style="margin-bottom: 1em;">
+    <label for="loai_khoan_thu" style="display: block; font-weight: bold;">Loại khoản thu:</label>
+    <select id="loai_khoan_thu" name="loai_khoan_thu" required style="width: 100%; padding: 8px;">
+      <option value="">-- Chọn loại khoản thu --</option>
+      <option value="Bắt buộc" {{#if (eq fees.loai_khoan_thu "Bắt buộc")}}selected{{/if}}>Bắt buộc</option>
+      <option value="Tự nguyện" {{#if (eq fees.loai_khoan_thu "Tự nguyện")}}selected{{/if}}>Tự nguyện</option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 1em;">
+    <label for="so_tien" style="display: block; font-weight: bold;">Số tiền (VNĐ):</label>
+    <input type="number" id="so_tien" name="so_tien" required min="0" step="1000"
+      value="{{fees.so_tien}}" placeholder="Ví dụ: 500000" style="width: 100%; padding: 8px;" />
+  </div>
+
+  
+
+  <div style="margin-bottom: 1em;">
+    <label for="dot_thu" style="display: block; font-weight: bold;">Đợt thu (MM/YYYY):</label>
+    <input type="text" id="dot_thu" name="dot_thu" required pattern="^(0?[1-9]|1[0-2])\/\d{4}$"
+      value="{{fees.dot_thu}}" placeholder="Ví dụ: 04/2025" style="width: 100%; padding: 8px;" />
+    <small style="color: gray;">Nhập định dạng MM/YYYY, ví dụ 04/2025</small>
+  </div>
+
+  
+  <div style="margin-bottom: 1em;">
+  <label for="ngay_bat_dau" style="display: block; font-weight: bold;">Ngày bắt đầu:</label>
+  <input type="date" id="ngay_bat_dau" name="ngay_bat_dau" required
+    value="{{formatDate fees.ngay_bat_dau 'YYYY-MM-DD'}}"
+    style="width: 100%; padding: 8px;" />
+</div>
+
+<div style="margin-bottom: 1em;">
+  <label for="ngay_ket_thuc" style="display: block; font-weight: bold;">Ngày kết thúc:</label>
+  <input type="date" id="ngay_ket_thuc" name="ngay_ket_thuc" required
+    value="{{formatDate fees.ngay_ket_thuc 'YYYY-MM-DD'}}"
+    style="width: 100%; padding: 8px;" />
+</div>
+
+
+  <button type="submit" style="background-color: #007BFF; color: white; border: none; padding: 10px 20px; cursor: pointer;">
+    Lưu thông tin
+  </button>
+</form>

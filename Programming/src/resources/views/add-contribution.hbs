@@ -1,0 +1,103 @@
+<style>
+  .container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+  }
+
+  h3, h4 {
+    color: #2980b9;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+  }
+
+  .info p {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+
+  .info p strong {
+    display: inline-block;
+    width: 160px;
+    color: #2c3e50;
+  }
+
+  form {
+    margin-top: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  button {
+    background-color: #2980b9;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #1f6390;
+  }
+</style>
+
+<div class="container">
+  <h3>Thêm đóng góp tự nguyện</h3>
+
+  <div class="info">
+    <h4>Thông tin khoản thu</h4>
+    <p><strong>Tên khoản thu:</strong> {{fee.ten_khoan_thu}}</p>
+    <p><strong>Loại khoản thu:</strong> {{fee.loai_khoan_thu}}</p>
+    <p><strong>Số tiền đề xuất:</strong> {{fee.so_tien}} VNĐ</p>
+    <p><strong>Đợt thu:</strong> {{fee.dot_thu}}</p>
+    <p><strong>Thời gian thu:</strong> {{formatDate fee.ngay_bat_dau}} - {{formatDate fee.ngay_ket_thuc}}</p>
+  </div>
+
+  <form action="/household-fee/add-contribution" method="POST">
+    <div class="form-group">
+      <label for="household_id">Chọn hộ khẩu:</label>
+      <select id="household_id" name="household_id" required>
+        <option value="">-- Chọn hộ khẩu --</option>
+        {{#each households}}
+          <option value="{{this._id}}">{{this._id}} - {{this.chu_ho}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="so_tien">Số tiền đóng góp (VNĐ):</label>
+      
+      <input type="number" id="so_tien" name="so_tien" class="form-control" min="1000" step="1000" required>
+
+    </div>
+
+    <input type="hidden" name="fee_id" value="{{fee._id}}">
+    <button type="submit">Xác nhận đóng góp</button>
+  </form>
+</div>

@@ -1,0 +1,172 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<style>
+  .row-equal-height {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .row-equal-height > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+  }
+  .flex-fill {
+    flex: 1 1 auto;
+  }
+</style>
+
+<div class="container mt-4">
+  <h2 class="mb-4">Thông tin chi tiết khoản thu</h2>
+
+  <!-- Thông tin khoản thu + Bảng tổng số hộ + Tổng tiền + Biểu đồ -->
+  <div class="row mb-4">
+    <!-- Cột trái: Thông tin khoản thu + bảng nhỏ -->
+    <div class="col-md-8 d-flex flex-column">
+      <div class="card mb-3 flex-fill">
+        <div class="card-header bg-primary text-white">Thông tin khoản thu</div>
+        <div class="card-body">
+          <p><strong>Mã khoản thu:</strong> {{fee._id}}</p>
+          <p><strong>Tên khoản thu:</strong> {{fee.ten_khoan_thu}}</p>
+          <p><strong>Loại khoản thu:</strong> {{fee.loai_khoan_thu}}</p>
+          <p><strong>Số tiền mỗi hộ:</strong> {{fee.so_tien}} VND</p>
+          <p><strong>Đợt thu:</strong> {{fee.dot_thu}}</p>
+          <p><strong>Ngày bắt đầu:</strong> {{formatDate fee.ngay_bat_dau}}</p>
+          <p><strong>Ngày kết thúc:</strong> {{formatDate fee.ngay_ket_thuc}}</p>
+        </div>
+      </div>
+
+      <!-- Bảng nhỏ thông tin tổng số hộ -->
+      <div class="card flex-fill">
+        <div class="card-header bg-info text-white">Tổng hợp hộ tham gia</div>
+        <div class="card-body">
+          <p><strong>Tổng số hộ tham gia đợt thu:</strong> {{totalHouseholds}}</p>
+
+          <p><strong>Số hộ đã nộp:</strong> {{daNop.length}}</p>
+          <p><strong>Số hộ chưa nộp:</strong> {{chuaNop.length}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cột phải: Tổng thu & thiếu + Biểu đồ -->
+    <div class="col-md-4 d-flex flex-column">
+      <div class="card mb-3">
+        <div class="card-header bg-success text-white">Tổng hợp</div>
+        <div class="card-body">
+          <p><strong>Đã thu:</strong> {{tongThu}} VND</p>
+          <p><strong>Còn thiếu:</strong> {{conThieu}} VND</p>
+        </div>
+      </div>
+
+      <div class="card flex-fill">
+        <div class="card-header bg-secondary text-white">Tỉ lệ hoàn thành</div>
+        <div class="card-body text-center">
+          <canvas id="completionChart" style="max-width: 400px; height: 250px; margin: auto;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hai bảng nằm ngang cân đối -->
+  <div class="row row-equal-height mb-4">
+    <!-- Bảng đã nộp -->
+    <div class="col-md-6 px-2">
+      <div class="card flex-fill">
+        <div class="card-header bg-info text-white">
+          Danh sách hộ đã nộp ({{daNop.length}})
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Mã hộ khẩu</th>
+                <th scope="col">Số tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each daNop}}
+              <tr>
+                <td>{{this.household_id}}</td>
+                <td>{{this.so_tien}}</td>
+              </tr>
+              {{else}}
+              <tr><td colspan="2" class="text-center">Không có hộ nào</td></tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bảng chưa nộp -->
+    <div class="col-md-6 px-2">
+      <div class="card flex-fill">
+        <div class="card-header bg-warning text-dark">
+          Danh sách hộ chưa nộp ({{chuaNop.length}})
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Mã hộ khẩu</th>
+                <th scope="col">Số tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each chuaNop}}
+              <tr>
+                <td>{{this.household_id}}</td>
+                <td>{{../fee.so_tien}}</td>
+              </tr>
+              {{else}}
+              <tr><td colspan="2" class="text-center">Tất cả đã nộp</td></tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById('completionChart');
+
+  if (ctx) {
+    const completed = {{daNop.length}};
+    const incomplete = {{chuaNop.length}};
+    const totalHouseholds = completed + incomplete;
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Đã nộp', 'Chưa nộp'],
+        datasets: [{
+          data: [completed, incomplete],
+          backgroundColor: ['#28a745', '#ffc107'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          datalabels: {
+            formatter: (value) => {
+              const percentage = totalHouseholds === 0 ? 0 : ((value / totalHouseholds) * 100).toFixed(1);
+              return percentage + '%';
+            },
+            color: '#000',
+            font: {
+              weight: 'bold',
+              size: 14
+            }
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  }
+</script>

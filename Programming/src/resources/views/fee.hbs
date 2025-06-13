@@ -1,0 +1,120 @@
+{{!-- CSS đặc thù --}}
+{{#*inline "styles"}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" />
+{{/inline}}
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white text-center">
+      <h4 class="mb-0">Danh sách khoản thu</h4>
+    </div>
+
+    <table class="table table-hover table-bordered mb-0 text-center" id="feeTable">
+      <thead class="thead-dark">
+        <tr>
+          <th>Mã khoản thu</th>
+          <th>Tên khoản thu</th>
+          <th>Loại khoản thu</th>
+          <th>Số tiền</th>
+          <th>Đợt thu</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each fees}}
+          <tr>
+            <td><a href="/fee/{{this._id}}" class="font-weight-bold text-primary">{{this._id}}</a></td>
+            <td>{{this.ten_khoan_thu}}</td>
+            <td>{{this.loai_khoan_thu}}</td>
+            <td>{{this.so_tien}}</td>
+            <td>{{this.dot_thu}}</td>
+            <td>{{formatDate this.ngay_bat_dau}}</td>
+            <td>{{formatDate this.ngay_ket_thuc}}</td>
+            <td>
+              <a href="/fee/{{this._id}}/edit" class="btn btn-sm btn-outline-info">
+                <i class="fas fa-edit"></i> Sửa
+              </a>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-fee-modal">
+                <i class="fas fa-trash-alt"></i> Xóa
+              </button>
+            </td>
+            <td>
+              {{#if (eq this.loai_khoan_thu "Tự nguyện")}}
+                <a href="/household-fee/add-contribution/{{this._id}}" class="btn btn-primary btn-sm">Thêm đóng góp</a>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" id="delete-fee-modal" tabindex="-1" role="dialog" aria-labelledby="deleteFeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteFeeModalLabel">Xác nhận xóa khoản thu</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Toàn bộ thông tin về khoản thu này sẽ bị xóa bỏ. <br />Bạn có chắc chắn không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        <button type="button" id="btn-delete-fee" class="btn btn-danger">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form ẩn submit xóa -->
+<form name="delete-fee-form" method="POST"></form>
+
+{{!-- JS đặc thù --}}
+{{#*inline "scripts"}}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    const table = $('#feeTable').DataTable({
+      searching: true,
+      language: {
+        lengthMenu: "Hiển thị _MENU_ dòng",
+        info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+        paginate: {
+          previous: "Trước",
+          next: "Sau"
+        },
+        zeroRecords: "Không tìm thấy kết quả phù hợp",
+      },
+      columnDefs: [
+        { targets: [7, 8, 9], orderable: false }
+      ]
+    });
+
+    let feeId;
+    const deleteForm = document.forms['delete-fee-form'];
+
+    $('#delete-fee-modal').on('show.bs.modal', function (event) {
+      const button = $(event.relatedTarget);
+      feeId = button.data('id');
+    });
+
+    $('#btn-delete-fee').on('click', function () {
+      deleteForm.action = '/fee/' + feeId + '?_method=DELETE';
+      deleteForm.submit();
+    });
+  });
+</script>
+{{/inline}}
