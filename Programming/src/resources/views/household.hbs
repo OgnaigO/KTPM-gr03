@@ -1,0 +1,118 @@
+{{!-- CSS đặc thù cho DataTables --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" />
+
+{{!-- Font Awesome (chỉ load 1 lần trong layout nếu có thể) --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white text-center">
+      <h4 class="mb-0">Danh sách hộ khẩu</h4>
+    </div>
+    <div class="card-body p-3">
+
+      {{!-- Input tìm kiếm nếu bạn muốn bật --}}
+      {{!--
+      <div class="mb-3">
+        <input id="householdSearch" type="text" class="form-control" placeholder="Tìm kiếm theo: mã hộ khẩu, tên chủ hộ, số phòng, số thành viên">
+      </div>
+      --}}
+
+      <table class="table table-hover mb-0" id="householdTable">
+        <thead class="thead-dark text-center">
+          <tr>
+            <th scope="col">Mã hộ khẩu</th>
+            <th scope="col">Tên chủ hộ</th>
+            <th scope="col">Số phòng</th>
+            <th scope="col">Số thành viên</th>
+            <th scope="col">Hành động</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          {{#each households}}
+          <tr>
+            <td><a href="/household/{{this._id}}" class="text-decoration-none">{{this._id}}</a></td>
+            <td>{{this.chu_ho}}</td>
+            <td>{{this.so_phong}}</td>
+            <td>{{this.so_thanh_vien}}</td>
+            <td>
+              <a href="/household/{{this._id}}/edit" class="btn btn-sm btn-outline-info mr-1">
+                <i class="fas fa-edit"></i> Sửa
+              </a>
+              <button class="btn btn-sm btn-outline-danger" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-household-modal">
+                <i class="fas fa-trash-alt"></i> Xóa
+              </button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" id="delete-household-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa hộ khẩu</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Toàn bộ thông tin về hộ khẩu này sẽ bị xóa bỏ. Bạn có chắc chắn không?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        <button type="button" id="btn-delete-household" class="btn btn-danger">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form ẩn submit xóa -->
+<form name="delete-household-form" method="POST"></form>
+
+{{!-- JS đặc thù --}}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    const table = $('#householdTable').DataTable({
+      searching: true, // Bật tìm kiếm
+      language: {
+        lengthMenu: "Hiển thị _MENU_ dòng",
+        info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+        paginate: {
+          previous: "Trước",
+          next: "Sau"
+        },
+        zeroRecords: "Không tìm thấy kết quả phù hợp",
+      },
+      columnDefs: [
+        { targets: [4], orderable: false } // Cột hành động không được sắp xếp
+      ]
+    });
+
+    // Nếu bật input tìm kiếm riêng
+    $('#householdSearch').on('keyup', function () {
+      table.search(this.value).draw();
+    });
+
+    let householdId;
+    const deleteForm = document.forms['delete-household-form'];
+
+    $('#delete-household-modal').on('show.bs.modal', function (event) {
+      const button = $(event.relatedTarget);
+      householdId = button.data('id');
+    });
+
+    $('#btn-delete-household').on('click', function () {
+      deleteForm.action = '/household/' + householdId + '?_method=DELETE';
+      deleteForm.submit();
+    });
+  });
+</script>

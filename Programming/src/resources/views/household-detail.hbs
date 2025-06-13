@@ -1,0 +1,81 @@
+<style>
+  .household-detail {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  .household-detail h3 {
+    color: #2c3e50;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .household-detail p {
+    font-size: 1.1rem;
+    margin: 12px 0;
+  }
+  .household-detail p strong {
+    color: #2980b9;
+  }
+</style>
+
+<div class="household-detail">
+  <h3>Chi tiết hộ khẩu: {{household._id}}</h3>
+
+  <p><strong>Chủ hộ:</strong> {{household.chu_ho}}</p>
+  <p><strong>Số phòng:</strong> {{household.so_phong}}</p>
+  <p><strong>Số thành viên:</strong> {{household.so_thanh_vien}}</p>
+</div>
+
+<div class="household-detail" style="margin-top: 30px;">
+  <h3>Khoản thu phải nộp</h3>
+  {{#if household_fees.length}}
+    <table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="border-bottom:1px solid #ccc;">Tên khoản thu</th>
+          <th style="border-bottom:1px solid #ccc;">Số tiền</th>
+          <th style="border-bottom:1px solid #ccc;">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each household_fees}}
+          <tr>
+            <td>{{this.fee_id.ten_khoan_thu}}</td>
+            <td>{{this.fee_id.so_tien}}</td>
+            <td>
+        {{#if (eq this.status "đã nộp")}}
+  <span style="color: green; font-weight: bold;">Đã nộp</span>
+{{else}}
+  {{#if (eq ../user.role "ketoan")}}
+    <form action="/household-fee/{{this._id}}/pay" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-success btn-sm">Xác nhận đã nộp</button>
+    </form>
+  {{else}}
+    <span style="color: gray; font-style: italic;">Chưa nộp</span>
+  {{/if}}
+{{/if}}
+
+      </td>
+          </tr>
+        {{/each}}
+        </tbody>
+    </table>
+  {{else}}
+    <p>Không có khoản thu nào.</p>
+  {{/if}}
+</div>
+
+<div style="text-align: center; margin-bottom: 15px;">
+  <a href="/citizen">← Quay lại danh sách nhân khẩu</a>
+</div>
+
+<div style="text-align: center; margin-bottom: 15px;">
+  <a href="/household">← Quay lại danh sách hộ khẩu</a>
+</div>
+
